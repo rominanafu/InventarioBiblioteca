@@ -10,7 +10,7 @@ Las bibliotecas tienen una cantidad inmensa de recursos, y me parece interesante
 Para evitar hacer todo a papel, considero que es importante tomar en cuenta la tecnología que tenemos disponible, realizando un inventario digital, para así simplificar el proceso de actualización de cada recurso, y tener una herramienta de búsqueda que encuntre los textos de una manera sencilla y rápida.
 
 ## Diagrama UML
-![Diagrama](UML\Diagrama.jpg)<br><br>
+![Diagrama](UML/Diagrama.jpg)<br><br>
 La función de cada clase es la siguiente:
 * **Biblioteca:** Tendrá el registro de cada una de las repisas.
 * **Repisa:** Contendrá todos los textos disponibles en la biblioteca.
