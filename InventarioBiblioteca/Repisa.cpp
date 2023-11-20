@@ -21,11 +21,12 @@ class Repisa {
 
         bool agregarTexto(int op, vector<Categoria> categorias);
         void consultarTextos();
-        int buscarTexto(int op, string titulo);
+        int buscarTexto(int op, string titulo, bool mostrarInfo);
         bool reservarTexto(int op, int pos, Usuario u);
         bool renovarTexto(int op, int pos);
         void consultarReserva(int op, int pos);
-        bool quitarTexto(int pos);
+        void regresarTexto(int op, int pos);
+        //bool quitarTexto(int pos);
 
 };
 
@@ -151,7 +152,7 @@ void Repisa::consultarTextos() {
 
 }
 
-int Repisa::buscarTexto(int op, string titulo) {
+int Repisa::buscarTexto(int op, string titulo, bool mostrarInfo=true) {
 
     int posLibro = 0, posRevista = 0;
     
@@ -159,15 +160,19 @@ int Repisa::buscarTexto(int op, string titulo) {
         if (tipoTexto[i] == op) {
             if (op == 1) {
                 if (libros[posLibro].getTitulo() == titulo) {
-                    cout << "\nLos detalles del libro que busca son los siguientes:\n";
-                    libros[posLibro].consultarInformacion();
+                    if (mostrarInfo){
+                        cout << "\nLos detalles del libro que busca son los siguientes:\n";
+                        libros[posLibro].consultarInformacion();
+                    }
                     return posLibro;
                 }
                 posLibro++;
             } else {
                 if (revistas[posRevista].getTitulo() == titulo) {
-                    cout << "\nLos detalles de la revista que busca son los siguientes:\n";
-                    revistas[posRevista].consultarInformacion();
+                    if (mostrarInfo) {
+                        cout << "\nLos detalles de la revista que busca son los siguientes:\n";
+                        revistas[posRevista].consultarInformacion();
+                    }
                     return posRevista;
                 }
                 posRevista++;
@@ -199,6 +204,13 @@ bool Repisa::renovarTexto(int op, int pos) {
     } else {
         posible = revistas[pos].renovar();
     }
+
+    if (posible) {
+        cout << "La nueva fecha de regreso es: ";
+        if (op == 1) cout << libros[pos].getFechaRegreso() << endl;
+        else cout << revistas[pos].getFechaRegreso() << endl;
+    }
+
     return posible;
 
 }
@@ -219,6 +231,17 @@ void Repisa::consultarReserva(int op, int pos) {
 
 }
 
+void Repisa::regresarTexto(int op, int pos) {
+
+    if (op == 1) {
+        libros[pos].regresar();
+    } else {
+        revistas[pos].regresar();
+    }
+
+}
+
+/*
 bool Repisa::quitarTexto(int pos) {
 
     if (tipoTexto.size() < pos) {
@@ -256,3 +279,4 @@ bool Repisa::quitarTexto(int pos) {
     return true;
 
 }
+*/
