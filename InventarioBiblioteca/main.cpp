@@ -31,6 +31,55 @@ void desplegarMenu() {
 
 }
 
+void reservar(int op) {
+    
+    if (op == 1) cout << "\nIngrese el nombre del libro:\n";
+    else cout << "\nIngrese el nombre de la revista:\n";
+    cin.ignore();
+    string titulo, nombre;
+    int posRepisa, posTexto=-1, posUsuario=-1;
+    getline(cin, titulo);
+    for(posRepisa=0; posRepisa<repisas.size(); posRepisa++) {
+        posTexto = repisas[posRepisa].buscarTexto(op, titulo);
+        if (posTexto != -1) {
+            break;
+        }
+    }
+
+    if (posTexto == -1) {
+        if (op == 1) cout << "\nEl libro no se encuentra en esta biblioteca.\n";
+        else cout << "\nLa revista no se encuentra en esta biblioteca.\n";
+    } else {
+        cout << "\nIngrese el nombre del usuario: ";
+        //cin.ignore();
+        getline(cin, nombre);
+        for(int i=0; i<usuarios.size(); i++) {
+            if (usuarios[i].getNombre() == nombre) {
+                posUsuario = i;
+                break;
+            }
+        }
+        
+        if (posUsuario == -1) {
+            Usuario nuevoUsuario(nombre, usuarios.size()+1);
+            usuarios.push_back(nuevoUsuario);
+            posUsuario = usuarios.size()-1;
+        }
+
+        bool reservado = repisas[posRepisa].reservarTexto(op, posTexto, usuarios[posUsuario]);
+        if (reservado) {
+            cout << "\nReserva exitosa\n";
+            repisas[posRepisa].consultarReserva(op, posTexto);
+        } else {
+            cout << "La reserva no se ha podido ejecutar.\n";
+            if (op == 1) cout << "El libro no está disponible por el momento.\n";
+            else cout << "La revista no está disponible por el momento.\n";
+        }
+
+    }
+    
+}
+
 int main() {
 
     inicializarCategorias();
@@ -71,42 +120,14 @@ int main() {
             usuarios.push_back(nuevoUsuario);
 
         } else if (opcion == 4) { // Reservar libro
+
+            reservar(1);
+        
+        } else if (opcion == 5) { // Reservar revista
             
-            cout << "Ingrese el nombre del libro:\n";
-            cin.ignore();
-            string titulo, nombre;
-            int posRepisa, posLibro=-1, posUsuario=-1;
-            getline(cin, titulo);
-            for(posRepisa=0; posRepisa<repisas.size(); posRepisa++) {
-                posLibro = repisas[posRepisa].buscarTexto(1, titulo);
-                if (posLibro != -1) {
-                    break;
-                }
-            }
+            reservar(2);
 
-            if (posLibro == -1) {
-                cout << "El libro no se encuentra en esta libreria.\n";
-            } else {
-                cout << "Ingrese el nombre del usuario: ";
-                cin.ignore();
-                getline(cin, nombre);
-                for(int i=0; i<usuarios.size(); i++) {
-                    if (usuarios[i].getNombre() == nombre) {
-                        posUsuario = i;
-                        break;
-                    }
-                }
-                
-                if (posUsuario == -1) {
-                    Usuario nuevoUsuario(nombre, usuarios.size()+1);
-                    usuarios.push_back(nuevoUsuario);
-                    posUsuario = usuarios.size();
-                }
-
-                // falta reservar
-            }
-
-        }
+        } 
         else if (opcion == 6) { // Salir
 
             cout << "Vuelva pronto :)\n";

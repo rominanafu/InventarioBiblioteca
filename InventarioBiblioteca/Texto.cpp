@@ -28,6 +28,7 @@ class Texto {
         bool renovar();
         string getTitulo();
         string getFechaRegreso();
+        string getNombreUsuario();
         void regresar();
         void agregarCategoria(Categoria c);
 
@@ -59,6 +60,7 @@ bool Texto::reservar(Usuario u) {
     get<0>(fechaRegreso) = stoi(date_time.substr(8, 2));
     get<1>(fechaRegreso) = date_time.substr(4, 3);
     get<2>(fechaRegreso) = stoi(date_time.substr(20, 4));
+    disponible = false;
     renovar();
 
     return true;
@@ -97,6 +99,10 @@ string Texto::getFechaRegreso() {
     string f = to_string(get<0>(fechaRegreso)) + ' ' + get<1>(fechaRegreso);
     f += ' ' + to_string(get<2>(fechaRegreso));
     return f;
+}
+
+string Texto::getNombreUsuario() {
+    return usuario.getNombre();
 }
 
 void Texto::regresar() {

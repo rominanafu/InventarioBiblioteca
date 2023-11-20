@@ -22,6 +22,9 @@ class Repisa {
         bool agregarTexto(int op, vector<Categoria> categorias);
         void consultarTextos();
         int buscarTexto(int op, string titulo);
+        bool reservarTexto(int op, int pos, Usuario u);
+        bool renovarTexto(int op, int pos);
+        void consultarReserva(int op, int pos);
         bool quitarTexto(int pos);
 
 };
@@ -64,7 +67,7 @@ bool Repisa::agregarTexto(int op, vector<Categoria> categorias) {
         cin.ignore();
         getline(cin, autor);
         cout << "Ingrese el nombre de la editorial:\n";
-        cin.ignore();
+        //cin.ignore();
         getline(cin, editorial);
         cout << "Ingrese número de edición:\n";
         cin >> edicion;
@@ -73,7 +76,7 @@ bool Repisa::agregarTexto(int op, vector<Categoria> categorias) {
         NuevoLibro.setEditorial(editorial);
         NuevoLibro.setEdicion(edicion);
 
-        cout << "¿A que categorias pertenece este libro?\n";
+        cout << "A que categorias pertenece este libro?\n";
         imprimirCategorias(categorias);
         cout << "Favor de ingresar el codigo de las categorias a agregar.";
         cout << "\nPara dejar de agregar categorias, ingrese 0.\n";
@@ -102,13 +105,13 @@ bool Repisa::agregarTexto(int op, vector<Categoria> categorias) {
         cout << "Ingrese el nombre de la revista:\n";
         cin.ignore();
         getline(cin, nombreRevista);
-        cout << "Ingrese número de volumen:\n";
+        cout << "Ingrese numero de volumen:\n";
         cin >> volumen;
 
         NuevaRevista.setNombreRevista(nombreRevista);
         NuevaRevista.setVolumen(volumen);
 
-        cout << "¿A que categorias pertenece este libro?\n";
+        cout << "A que categorias pertenece esta revista?\n";
         imprimirCategorias(categorias);
         cout << "Favor de ingresar el codigo de las categorias a agregar.";
         cout << "\nPara dejar de agregar categorias, ingrese 0.\n";
@@ -155,18 +158,64 @@ int Repisa::buscarTexto(int op, string titulo) {
     for(int i=0; i<tipoTexto.size(); i++) {
         if (tipoTexto[i] == op) {
             if (op == 1) {
-                if (libros[posLibro].getTitulo() == titulo)
-                    return i;
+                if (libros[posLibro].getTitulo() == titulo) {
+                    cout << "\nLos detalles del libro que busca son los siguientes:\n";
+                    libros[posLibro].consultarInformacion();
+                    return posLibro;
+                }
                 posLibro++;
             } else {
-                if (revistas[posRevista].getTitulo() == titulo)
-                    return i;
+                if (revistas[posRevista].getTitulo() == titulo) {
+                    cout << "\nLos detalles de la revista que busca son los siguientes:\n";
+                    revistas[posRevista].consultarInformacion();
+                    return posRevista;
+                }
                 posRevista++;
             }
         }
     }
     
     return -1;
+
+}
+
+bool Repisa::reservarTexto(int op, int pos, Usuario u) {
+    
+    bool posible;
+    if (op == 1) {
+        posible = libros[pos].reservar(u);
+    } else {
+        posible = revistas[pos].reservar(u);
+    }
+    return posible;
+
+}
+
+bool Repisa::renovarTexto(int op, int pos) {
+    
+    bool posible;
+    if (op == 1) {
+        posible = libros[pos].renovar();
+    } else {
+        posible = revistas[pos].renovar();
+    }
+    return posible;
+
+}
+
+void Repisa::consultarReserva(int op, int pos) {
+
+    if (op == 1) {
+        cout << "El libro " << libros[pos].getTitulo() << " fue reservado por ";
+        cout << libros[pos].getNombreUsuario() << endl;
+        cout << "Se espera que el libro sea devuelto el ";
+        cout << libros[pos].getFechaRegreso() << endl;
+    } else {
+        cout << "La revista " << revistas[pos].getTitulo() << " fue reservada por ";
+        cout << revistas[pos].getNombreUsuario() << endl;
+        cout << "Se espera que la revista sea devuelta en: ";
+        cout << revistas[pos].getFechaRegreso() << endl;
+    }
 
 }
 
