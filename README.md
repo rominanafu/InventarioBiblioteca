@@ -12,7 +12,6 @@ Para evitar hacer todo a papel, considero que es importante tomar en cuenta la t
 ## Diagrama UML
 ![Diagrama](UML/Diagrama.jpg)<br><br>
 La función de cada clase es la siguiente:
-* **Biblioteca:** Tendrá el registro de cada una de las repisas.
 * **Repisa:** Contendrá todos los textos disponibles en la biblioteca.
 * **Texto:** Será la clase base para cualquier tipo de recurso que la repisa guarde (como libros y revistas).
 * **Libro:** Un Texto de tipo libro, que además de los atributos de Texto, tendrá editorial y edición.
