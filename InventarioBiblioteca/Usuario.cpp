@@ -26,7 +26,7 @@ class Usuario {
         Usuario(int _id);
         Usuario(string n, int _id);
 
-        void registrarUsuario(string, string t);
+        void registrarUsuario(string n, string t);
         void consultarInformacion();
         string getNombre();
 

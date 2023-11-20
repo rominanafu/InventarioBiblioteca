@@ -20,7 +20,6 @@ class Categoria {
 
         string getNombre();
         int getId();
-        void agregar_categoria(string n, int _id);
 
 };
 
@@ -40,11 +39,6 @@ string Categoria::getNombre() {
 
 int Categoria::getId() {
     return id;
-}
-
-void Categoria::agregar_categoria(string n, int _id) {
-    nombre = n;
-    id = _id;
 }
 
 #endif

@@ -11,6 +11,8 @@ class Revista : public Texto {
 
     public:
 
+        Revista();
+
         void setVolumen(int _volumen);
         void setNombreRevista(string _nombre);
         int getVolumen();
@@ -18,6 +20,11 @@ class Revista : public Texto {
         void consultarInformacion();
 
 };
+
+Revista::Revista():Texto() {
+    volumen = 0;
+    nombreRevista = "";
+}
 
 void Revista::setVolumen(int _volumen) {
     volumen = _volumen;

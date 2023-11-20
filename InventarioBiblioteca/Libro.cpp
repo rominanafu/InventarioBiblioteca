@@ -24,7 +24,7 @@ class Libro : public Texto {
 
 };
 
-Libro::Libro() {
+Libro::Libro():Texto() {
     edicion = 0;
     editorial = "";
     autor = "";
