@@ -53,7 +53,9 @@ pair<int,int> posiciones(int op, bool mostrarInfo=true) {
     getline(cin, titulo);
 
     for(posRepisa=0; posRepisa<repisas.size(); posRepisa++) {
-        posTexto = repisas[posRepisa].buscarTexto(op, titulo, mostrarInfo);
+        pair<int, string> res = repisas[posRepisa].buscarTexto(op, titulo);
+        if (mostrarInfo) cout << res.second;
+        posTexto = res.first;
         if (posTexto != -1) {
             break;
         }
@@ -89,8 +91,18 @@ void reservar(int op) {
         }
         
         if (posUsuario == -1) {
-            Usuario nuevoUsuario(nombre, usuarios.size()+1);
+            Usuario nuevoUsuario(usuarios.size()+1);
+            
+            string nombre, telefono;
+            cout << "Ingrese numero de telefono:\n";
+            cin.ignore();
+            getline(cin, telefono);
+
+            nuevoUsuario.setNombre(nombre);
+            nuevoUsuario.setTelefono(telefono);
+
             usuarios.push_back(nuevoUsuario);
+
             posUsuario = usuarios.size()-1;
         }
 
@@ -185,6 +197,18 @@ int main() {
         if (opcion == 1) { // Registrar usuario
 
             Usuario nuevoUsuario(usuarios.size()+1);
+            
+            string nombre, telefono;
+            cout << "Ingrese nombre del usuario:\n";
+            cin.ignore();
+            getline(cin, nombre);
+            cout << "Ingrese numero de telefono:\n";
+            cin.ignore();
+            getline(cin, telefono);
+
+            nuevoUsuario.setNombre(nombre);
+            nuevoUsuario.setTelefono(telefono);
+
             usuarios.push_back(nuevoUsuario);
 
         } else if (opcion == 2) { // Registrar texto

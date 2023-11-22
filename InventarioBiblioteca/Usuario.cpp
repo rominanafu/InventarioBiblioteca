@@ -24,10 +24,10 @@ class Usuario {
 
         Usuario();
         Usuario(int _id);
-        Usuario(string n, int _id);
 
-        void registrarUsuario(string n, string t);
-        void consultarInformacion();
+        void setNombre(string n);
+        void setTelefono(string t);
+        string consultarInformacion();
         string getNombre();
 
 };
@@ -39,37 +39,21 @@ Usuario::Usuario() {
 }
 
 Usuario::Usuario(int _id) {
-    string n, t;
-    cout << "Ingrese nombre del usuario:\n";
-    cin.ignore();
-    getline(cin, n);
-    cout << "Ingrese numero de telefono:\n";
-    cin.ignore();
-    getline(cin, t);
-    nombre = n;
-    telefono = t;
+    nombre = "";
+    telefono = "";
     id = _id;
 }
 
-Usuario::Usuario(string n, int _id) {
-    string t;
-    cout << "Ingrese numero de telefono:\n";
-    cin.ignore();
-    getline(cin, t);
-    
+void Usuario::setNombre(string n) {
     nombre = n;
-    telefono = t;
-    id = _id;
 }
 
-void Usuario::registrarUsuario(string n, string t) {
-    nombre = n;
+void Usuario::setTelefono(string t) {
     telefono = t;
 }
 
-void Usuario::consultarInformacion() {
-    cout << "Nombre: " << nombre << '\n';
-    cout << "Teléfono: " << telefono << '\n';
+string Usuario::consultarInformacion() {
+    return "Nombre: " + nombre + "\nTelefono: " + telefono + '\n';
 }
 
 string Usuario::getNombre() {

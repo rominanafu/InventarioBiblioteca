@@ -20,7 +20,7 @@ class Repisa {
         bool agregarLibro(string titulo, int anio, string autor, string editorial, int edicion, vector<Categoria> c);
         bool agregarRevista(string titulo, int anio, string nombreRevista, int volumen, vector<Categoria> c);
         string consultarTextos();
-        int buscarTexto(int op, string titulo, bool mostrarInfo);
+        pair<int, string> buscarTexto(int op, string titulo);
         bool reservarTexto(int op, int pos, Usuario u);
         string renovarTexto(int op, int pos);
         string consultarReserva(int op, int pos);
@@ -108,35 +108,32 @@ string Repisa::consultarTextos() {
 
 }
 
-int Repisa::buscarTexto(int op, string titulo, bool mostrarInfo=true) {
+pair<int, string> Repisa::buscarTexto(int op, string titulo) {
 
     int posLibro = 0, posRevista = 0;
+    string res = "";
     
     for(int i=0; i<tipoTexto.size(); i++) {
         if (tipoTexto[i] == op) {
             if (op == 1) {
                 if (libros[posLibro].getTitulo() == titulo) {
-                    if (mostrarInfo){
-                        cout << "\nLos detalles del libro que busca son los siguientes:\n";
-                        cout << libros[posLibro].consultarInformacion();
-                    }
-                    return posLibro;
+                    res += "\nLos detalles del libro que busca son los siguientes:\n";
+                    res += libros[posLibro].consultarInformacion();
+                    return {posLibro, res};
                 }
                 posLibro++;
             } else {
                 if (revistas[posRevista].getTitulo() == titulo) {
-                    if (mostrarInfo) {
-                        cout << "\nLos detalles de la revista que busca son los siguientes:\n";
-                        cout << revistas[posRevista].consultarInformacion();
-                    }
-                    return posRevista;
+                    res += "\nLos detalles de la revista que busca son los siguientes:\n";
+                    res += revistas[posRevista].consultarInformacion();
+                    return {posRevista, res};
                 }
                 posRevista++;
             }
         }
     }
     
-    return -1;
+    return {-1, res};
 
 }
 

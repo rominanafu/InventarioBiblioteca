@@ -50,11 +50,11 @@ string Revista::getNombreRevista() {
 
 string Revista::consultarInformacion() {
     string ret = "";
-    ret += "Titulo: " + titulo;
-    ret += "\nNombre de la revista: " + nombreRevista;
-    ret += "\nVolumen: " + volumen;
-    ret += "\nAnio de publicacion: " + anio;
-    ret += "\nCategorias a las que pertenece:\n";
+    ret += "Titulo: " + titulo + "\n";
+    ret += "Nombre de la revista: " + nombreRevista + "\n";
+    ret += "Volumen: " + to_string(volumen) + "\n";
+    ret += "Anio de publicacion: " + to_string(anio) + "\n";
+    ret += "Categorias a las que pertenece:\n";
     for (int i=0; i<categorias.size(); i++) {
         ret += "- " + categorias[i].getNombre() + '\n';
     }

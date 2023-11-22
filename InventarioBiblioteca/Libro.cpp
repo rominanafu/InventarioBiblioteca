@@ -68,8 +68,8 @@ string Libro::consultarInformacion() {
     ret += "Titulo: " + titulo;
     ret += "\nAutor: " + autor;
     ret += "\nEditorial: " + editorial;
-    ret += "\nEdicion: " + edicion;
-    ret += "\nAnio de publicacion: " + anio;
+    ret += "\nEdicion: " + to_string(edicion);
+    ret += "\nAnio de publicacion: " + to_string(anio);
     ret += "Categorias a las que pertenece:\n";
 
     for (int i=0; i<categorias.size(); i++) {
