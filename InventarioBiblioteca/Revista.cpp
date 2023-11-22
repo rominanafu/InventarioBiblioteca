@@ -12,16 +12,22 @@ class Revista : public Texto {
     public:
 
         Revista();
+        Revista(string titulo, int anio);
 
         void setVolumen(int _volumen);
         void setNombreRevista(string _nombre);
         int getVolumen();
         string getNombreRevista();
-        void consultarInformacion();
+        string consultarInformacion();
 
 };
 
-Revista::Revista():Texto() {
+Revista::Revista() {
+    volumen = 0;
+    nombreRevista = "";
+}
+
+Revista::Revista(string _titulo, int _anio):Texto(_titulo, _anio) {
     volumen = 0;
     nombreRevista = "";
 }
@@ -42,16 +48,18 @@ string Revista::getNombreRevista() {
     return nombreRevista;
 }
 
-void Revista::consultarInformacion() {
-    cout << "Titulo: " << titulo << endl;
-    cout << "Nombre de la revista: " << nombreRevista << endl;
-    cout << "Volumen: " << volumen << endl;
-    cout << "Anio de publicacion: " << anio << endl;
-    cout << "Categorias a las que pertenece: " << endl;
+string Revista::consultarInformacion() {
+    string ret = "";
+    ret += "Titulo: " + titulo;
+    ret += "\nNombre de la revista: " + nombreRevista;
+    ret += "\nVolumen: " + volumen;
+    ret += "\nAnio de publicacion: " + anio;
+    ret += "\nCategorias a las que pertenece:\n";
     for (int i=0; i<categorias.size(); i++) {
-        cout << "- " << categorias[i].getNombre() << endl;
+        ret += "- " + categorias[i].getNombre() + '\n';
     }
     if (categorias.size() == 0) {
-        cout << "No se le ha asignado ninguna categoria hasta el momento.\n";
+        ret += "No se le ha asignado ninguna categoria hasta el momento.\n";
     }
+    return ret;
 }

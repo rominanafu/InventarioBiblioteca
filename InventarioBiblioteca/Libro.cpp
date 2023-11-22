@@ -13,6 +13,7 @@ class Libro : public Texto {
     public:
     
         Libro();
+        Libro(string titulo, int anio);
 
         void setEdicion(int _edicion);
         void setEditorial(string _editorial);
@@ -20,11 +21,17 @@ class Libro : public Texto {
         int getEdicion();
         string getEditorial();
         string getAutor();
-        void consultarInformacion();
+        string consultarInformacion();
 
 };
 
-Libro::Libro():Texto() {
+Libro::Libro() {
+    edicion = 0;
+    editorial = "";
+    autor = "";
+}
+
+Libro::Libro(string _titulo, int _anio):Texto(_titulo, _anio) {
     edicion = 0;
     editorial = "";
     autor = "";
@@ -54,21 +61,24 @@ string Libro::getAutor() {
     return autor;
 }
 
-void Libro::consultarInformacion() {
+string Libro::consultarInformacion() {
     
-    cout << "Titulo: " << titulo << endl;
-    cout << "Autor: " << autor << endl;
-    cout << "Editorial: " << editorial << endl;
-    cout << "Edicion: " << edicion << endl;
-    cout << "Anio de publicacion: " << anio << endl;
-    cout << "Categorias a las que pertenece: " << endl;
+    string ret = "";
+
+    ret += "Titulo: " + titulo;
+    ret += "\nAutor: " + autor;
+    ret += "\nEditorial: " + editorial;
+    ret += "\nEdicion: " + edicion;
+    ret += "\nAnio de publicacion: " + anio;
+    ret += "Categorias a las que pertenece:\n";
 
     for (int i=0; i<categorias.size(); i++) {
-        cout << "- " << categorias[i].getNombre() << endl;
+        ret += "- " + categorias[i].getNombre() + "\n";
     }
     
     if (categorias.size() == 0) {
-        cout << "No se le ha asignado ninguna categoria hasta el momento.\n";
-    
+        ret += "No se le ha asignado ninguna categoria hasta el momento.\n";
     }
+
+    return ret;
 }

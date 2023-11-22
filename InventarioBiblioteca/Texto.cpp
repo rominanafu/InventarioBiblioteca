@@ -22,8 +22,8 @@ class Texto {
     public:
 
         Texto();
+        Texto(string _titulo, int _anio);
 
-        void registrar();
         bool reservar(Usuario u);
         bool renovar();
         string getTitulo();
@@ -40,12 +40,9 @@ Texto::Texto() {
     disponible = true;
 }
 
-void Texto::registrar() {
-    cout << "Ingrese el titulo:\n";
-    cin.ignore();
-    getline(cin, titulo);
-    cout << "Ingrese anio de publicacion:\n";
-    cin >> anio;
+Texto::Texto(string _titulo, int _anio) {
+    titulo = _titulo;
+    anio = _anio;
 }
 
 bool Texto::reservar(Usuario u) {
