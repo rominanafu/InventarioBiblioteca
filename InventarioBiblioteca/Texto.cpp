@@ -5,8 +5,15 @@
 
 using namespace std;
 
-#ifndef TEXTO_H
-#define TEXTO_H
+#ifndef TEXTO_CPP
+#define TEXTO_CPP
+
+/*
+La clase Texto tendrá los atributos y métodos que
+tendrán los recursos de la biblioteca
+(como libros y revistas), y permitirá
+reservar, renovar y regresar cada texto
+*/
 
 class Texto {
 
@@ -26,6 +33,8 @@ class Texto {
 
         bool reservar(Usuario u);
         bool renovar();
+        void setTitulo(string t);
+        void setAnio(int a);
         string getTitulo();
         string getFechaRegreso();
         string getNombreUsuario();
@@ -43,8 +52,17 @@ Texto::Texto() {
 Texto::Texto(string _titulo, int _anio) {
     titulo = _titulo;
     anio = _anio;
+    disponible = true;
 }
 
+/*
+Método para reservar el texto, estableciendo
+una fecha de regreso con un plazo de un mes.
+Entrada:
+    u (Usuario) // Usuario reservando el texto
+Salida:
+    (bool) // Si el texto pudo ser reservado o no
+*/
 bool Texto::reservar(Usuario u) {
 
     if (disponible == false)
@@ -64,8 +82,12 @@ bool Texto::reservar(Usuario u) {
 
 }
 
+/*
+Método para agregar un mes a la fecha de devolución del texto.
+Salida:
+    (bool) // Si el texto pudo o no ser renovado
+*/
 bool Texto::renovar() {
-    // Método para agregar un mes a la fecha de devolución del texto
 
     if (disponible == true)
         return false;
@@ -83,6 +105,15 @@ bool Texto::renovar() {
         }
     }
     return true;
+
+}
+
+void Texto::setTitulo(string t) {
+    titulo = t;
+}
+
+void Texto::setAnio(int a) {
+    anio = a;
 }
 
 string Texto::getTitulo() {
@@ -106,6 +137,11 @@ void Texto::regresar() {
     disponible = true;
 }
 
+/*
+Método para registrar una nueva categoría al texto.
+Entrada:
+    c (Categoria) // Categoría a agregar
+*/
 void Texto::agregarCategoria(Categoria c) {
     for(int i=0; i<categorias.size(); i++) {
         if (categorias[i].getNombre() == c.getNombre()) {

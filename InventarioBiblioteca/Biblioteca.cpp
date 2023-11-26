@@ -6,6 +6,7 @@ vector<Repisa> repisas(2);
 vector<Categoria> categorias;
 vector<Usuario> usuarios;
 
+// Función que inicializa los valores del vector categorias
 void inicializarCategorias() {
 
     string c[] = {"Filosofia", "Matematicas", "Politica", "Infantiles",
@@ -20,6 +21,7 @@ void inicializarCategorias() {
 
 }
 
+// Función que muestra las categorías disponibles
 void imprimirCategorias() {
     
     cout << "\nCategorias disponibles:\n";
@@ -30,6 +32,7 @@ void imprimirCategorias() {
 
 }
 
+// Función que muestra las acciones disponibles
 void desplegarMenu() {
 
     cout << "\n 1. Registrar usuario\n";
@@ -42,14 +45,24 @@ void desplegarMenu() {
 
 }
 
+/*
+Función para buscar un texto en la biblioteca.
+Entrada:
+    op (int) // Tipo de texto
+    mostrarInfo (bool) // Si se quiere mostrar la
+                       // información del texto encontrado
+Salida:
+    {posRepisa, posTexto} (pair<int,int>)
+       // Posición de la repisa y del libro/revista
+*/
 pair<int,int> posiciones(int op, bool mostrarInfo=true) {
     
     if (op == 1) cout << "\nIngrese el nombre del libro:\n";
     else cout << "\nIngrese el nombre de la revista:\n";
 
     cin.ignore();
-    string titulo;
-    int posRepisa, posTexto=-1;
+    string titulo="";
+    int posRepisa=0, posTexto=-1;
     getline(cin, titulo);
 
     for(posRepisa=0; posRepisa<repisas.size(); posRepisa++) {
@@ -65,13 +78,109 @@ pair<int,int> posiciones(int op, bool mostrarInfo=true) {
 
 }
 
+/*
+Función para registrar un nuevo texto en la biblioteca.
+Entrada:
+    op (int) // Tipo de texto
+*/
+void registrarTexto(int op) {
+
+    bool agregado=false;
+    Repisa RepisaNueva;
+    if (op == 1) {
+
+        string titulo="", autor="", editorial="";
+        int anio=0, edicion=0, codigo=0;
+
+        cout << "Ingrese el titulo:\n";
+        cin.ignore();
+        getline(cin, titulo);
+        cout << "Ingrese anio de publicacion:\n";
+        cin >> anio;
+        cout << "Ingrese el nombre del autor:\n";
+        cin.ignore();
+        getline(cin, autor);
+        cout << "Ingrese el nombre de la editorial:\n";
+        getline(cin, editorial);
+        cout << "Ingrese numero de edición:\n";
+        cin >> edicion;
+
+        cout << "A que categorias pertenece este libro?\n";
+        imprimirCategorias();
+        cout << "Favor de ingresar el codigo de las categorias a agregar.";
+        cout << "\nPara dejar de agregar categorias, ingrese 0.\n";
+        
+        cin >> codigo;
+        vector<Categoria> c;
+        while (codigo != 0) {
+            if (codigo > categorias.size()) {
+                cout << "Codigo no valido.\n";
+            } else {
+                c.push_back(categorias[codigo-1]);
+            }
+            cin >> codigo;
+        }
+
+        agregado = repisas.back().agregarLibro(titulo, anio, autor, editorial, edicion, c);
+        if (!agregado) {
+            repisas.push_back(RepisaNueva);
+            repisas.back().agregarLibro(titulo, anio, autor, editorial, edicion, c);
+        }
+
+    } else {
+
+        string titulo="", nombreRevista="";
+        int anio=0, volumen=0, codigo=0;
+
+        cout << "Ingrese el titulo:\n";
+        cin.ignore();
+        getline(cin, titulo);
+        cout << "Ingrese anio de publicacion:\n";
+        cin >> anio;
+        cout << "Ingrese el nombre de la revista:\n";
+        cin.ignore();
+        getline(cin, nombreRevista);
+        cout << "Ingrese numero de volumen:\n";
+        cin >> volumen;
+
+        cout << "A que categorias pertenece esta revista?\n";
+        imprimirCategorias();
+        cout << "Favor de ingresar el codigo de las categorias a agregar.";
+        cout << "\nPara dejar de agregar categorias, ingrese 0.\n";
+        
+        cin >> codigo;
+        vector<Categoria> c;
+        while (codigo != 0) {
+            if (codigo > categorias.size()) {
+                cout << "Codigo no valido.\n";
+            } else {
+                c.push_back(categorias[codigo-1]);
+            }
+            cin >> codigo;
+        }
+
+        agregado = repisas.back().agregarRevista(titulo, anio, nombreRevista, volumen, c);
+        if (!agregado) {
+            repisas.push_back(RepisaNueva);
+            repisas.back().agregarRevista(titulo, anio, nombreRevista, volumen, c);
+        }
+
+    }
+
+}
+
+/*
+Función para reservar un texto de la biblioteca.
+Entrada:
+    op (int) // Tipo de texto
+*/
 void reservar(int op) {
     
     pair<int,int> p = posiciones(op);
     int posRepisa = p.first, posTexto = p.second;
     
     int posUsuario = -1;
-    string nombre;
+    string nombre="";
 
     if (posTexto == -1) {
 
@@ -81,19 +190,18 @@ void reservar(int op) {
     } else {
 
         cout << "\nIngrese el nombre del usuario: ";
-        //cin.ignore();
         getline(cin, nombre);
+
         for(int i=0; i<usuarios.size(); i++) {
             if (usuarios[i].getNombre() == nombre) {
                 posUsuario = i;
-                break;
             }
         }
         
         if (posUsuario == -1) {
             Usuario nuevoUsuario(usuarios.size()+1);
             
-            string nombre, telefono;
+            string telefono="";
             cout << "Ingrese numero de telefono:\n";
             cin.ignore();
             getline(cin, telefono);
@@ -120,6 +228,11 @@ void reservar(int op) {
     
 }
 
+/*
+Función para renovar la fecha de regreso de un libro.
+Entrada:
+    op (int) // Tipo de texto
+*/
 void renovar(int op) {
     
     pair<int,int> p = posiciones(op, false);
@@ -132,19 +245,24 @@ void renovar(int op) {
 
     } else {
 
-        string ret = repisas[posRepisa].renovarTexto(op, posTexto);
+        string fechaRegreso = repisas[posRepisa].renovarTexto(op, posTexto);
 
-        if (ret == "-1") {
+        if (fechaRegreso == "-1") {
             if (op == 1) cout << "Este libro no ha sido reservado.\n";
             else cout << "Esta revista no ha sido reservada.\n";
         } else {
-            cout << ret;
+            cout << fechaRegreso;
         }
 
     }
 
 }
 
+/*
+Función para regresar un texto de la biblioteca.
+Entrada:
+    op (int) // Tipo de texto
+*/
 void regresar(int op) {
     
     pair<int,int> p = posiciones(op, false);
@@ -152,8 +270,8 @@ void regresar(int op) {
 
     if (posTexto == -1) {
 
-        if (op == 1) cout << "\nEl libro no se encuentra en esta biblioteca.\n";
-        else cout << "\nLa revista no se encuentra en esta biblioteca.\n";
+        if (op == 1) cout << "\nEl libro no es de esta biblioteca.\n";
+        else cout << "\nLa revista no es de esta biblioteca.\n";
 
     } else {
 
@@ -171,9 +289,7 @@ int main() {
     cout << "\nHola, este es un inventario de biblioteca.\n";
 
     bool continuar = true;
-    int opcion, op;
-    bool agregado;
-    Repisa RepisaNueva;
+    int opcion=0, op=0;
 
     while (continuar) {
 
@@ -184,6 +300,7 @@ int main() {
 
         if (opcion >= 2 && opcion <= 5) {
 
+            // Preguntar por el tipo de texto
             string accion[] = {"registrar", "reservar", "renovar", "regresar"};
             cout << "El texto que quiere " << accion[opcion-2] << " es libro (1) o revista (2)?\n";
             cin >> op;
@@ -198,101 +315,36 @@ int main() {
 
             Usuario nuevoUsuario(usuarios.size()+1);
             
-            string nombre, telefono;
+            string nombre="", telefono="";
             cout << "Ingrese nombre del usuario:\n";
             cin.ignore();
             getline(cin, nombre);
-            cout << "Ingrese numero de telefono:\n";
-            cin.ignore();
-            getline(cin, telefono);
 
-            nuevoUsuario.setNombre(nombre);
-            nuevoUsuario.setTelefono(telefono);
+            bool registrado=false;
+            for(int i=0; i<usuarios.size(); i++) {
+                if (usuarios[i].getNombre() == nombre) {
+                    cout << "Este usuario ya ha sido registrado.\n";
+                    cout << "Informacion:\n" << usuarios[i].consultarInformacion();
+                    registrado = true;
+                }
+            }
 
-            usuarios.push_back(nuevoUsuario);
+            if (!registrado) {
+
+                cout << "Ingrese numero de telefono:\n";
+                cin.ignore();
+                getline(cin, telefono);
+
+                nuevoUsuario.setNombre(nombre);
+                nuevoUsuario.setTelefono(telefono);
+
+                usuarios.push_back(nuevoUsuario);
+
+            }
 
         } else if (opcion == 2) { // Registrar texto
 
-            if (op == 1) {
-
-                string titulo, autor, editorial;
-                int anio, edicion, codigo;
-
-                cout << "Ingrese el titulo:\n";
-                cin.ignore();
-                getline(cin, titulo);
-                cout << "Ingrese anio de publicacion:\n";
-                cin >> anio;
-                cout << "Ingrese el nombre del autor:\n";
-                cin.ignore();
-                getline(cin, autor);
-                cout << "Ingrese el nombre de la editorial:\n";
-                //cin.ignore();
-                getline(cin, editorial);
-                cout << "Ingrese numero de edición:\n";
-                cin >> edicion;
-
-                cout << "A que categorias pertenece este libro?\n";
-                imprimirCategorias();
-                cout << "Favor de ingresar el codigo de las categorias a agregar.";
-                cout << "\nPara dejar de agregar categorias, ingrese 0.\n";
-                
-                cin >> codigo;
-                vector<Categoria> c;
-                while (codigo != 0) {
-                    if (codigo > categorias.size()) {
-                        cout << "Codigo no valido.\n";
-                    } else {
-                        c.push_back(categorias[codigo-1]);
-                    }
-                    cin >> codigo;
-                }
-
-                agregado = repisas.back().agregarLibro(titulo, anio, autor, editorial, edicion, c);
-                if (!agregado) {
-                    repisas.push_back(RepisaNueva);
-                    repisas.back().agregarLibro(titulo, anio, autor, editorial, edicion, c);
-                }
-
-            } else {
-
-                string titulo, nombreRevista;
-                int anio, volumen, codigo;
-
-                cout << "Ingrese el titulo:\n";
-                cin.ignore();
-                getline(cin, titulo);
-                cout << "Ingrese anio de publicacion:\n";
-                cin >> anio;
-                cout << "Ingrese el nombre de la revista:\n";
-                cin.ignore();
-                getline(cin, nombreRevista);
-                cout << "Ingrese numero de volumen:\n";
-                cin >> volumen;
-
-                cout << "A que categorias pertenece esta revista?\n";
-                imprimirCategorias();
-                cout << "Favor de ingresar el codigo de las categorias a agregar.";
-                cout << "\nPara dejar de agregar categorias, ingrese 0.\n";
-                
-                cin >> codigo;
-                vector<Categoria> c;
-                while (codigo != 0) {
-                    if (codigo > categorias.size()) {
-                        cout << "Codigo no valido.\n";
-                    } else {
-                        c.push_back(categorias[codigo-1]);
-                    }
-                    cin >> codigo;
-                }
-
-                agregado = repisas.back().agregarRevista(titulo, anio, nombreRevista, volumen, c);
-                if (!agregado) {
-                    repisas.push_back(RepisaNueva);
-                    repisas.back().agregarRevista(titulo, anio, nombreRevista, volumen, c);
-                }
-
-            }
+            registrarTexto(op);
 
         } else if (opcion == 3) { // Reservar texto
 
@@ -308,17 +360,17 @@ int main() {
 
         } else if (opcion == 6) { // Ver textos en la biblioteca
 
-            string rep;
+            string repisaInfo="";
 
             for (int i=1; i<repisas.size(); i++) {
 
                 cout << "\nRepisa " << i << ":\n";
-                rep = repisas[i].consultarTextos();
-                cout << rep;
+                repisaInfo = repisas[i].consultarTextos();
+                cout << repisaInfo;
 
             }
 
-            if (rep == "-\n") {
+            if (repisaInfo == "-\n") {
                 cout << "\nLa biblioteca aun no cuenta con textos.\n";
             }
 

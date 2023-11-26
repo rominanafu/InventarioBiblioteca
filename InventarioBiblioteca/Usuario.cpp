@@ -3,8 +3,8 @@
 
 using namespace std;
 
-#ifndef USUARIO_H
-#define USUARIO_H
+#ifndef USUARIO_CPP
+#define USUARIO_CPP
 
 /*
 La clase Usuario servirá para tener un registro del nombre

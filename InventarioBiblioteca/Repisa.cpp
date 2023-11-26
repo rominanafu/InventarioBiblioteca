@@ -3,6 +3,14 @@
 
 using namespace std;
 
+/*
+La clase Repisa contendrá hasta 10 textos
+de la biblioteca (ya sean libros o revistas),
+y podrá buscar si cierto titulo ha sido guardado
+en dicha repisa, reservarlo, renovarlo, regresarlo,
+entre otras acciones.
+*/
+
 class Repisa {
 
     private:
@@ -25,7 +33,6 @@ class Repisa {
         string renovarTexto(int op, int pos);
         string consultarReserva(int op, int pos);
         void regresarTexto(int op, int pos);
-        //bool quitarTexto(int pos);
 
 };
 
@@ -37,6 +44,18 @@ Repisa::Repisa(int _capacidad) {
     capacidad = _capacidad;
 }
 
+/*
+Método para agregar un libro en la repisa
+Entrada:
+    titulo (string)
+    año (int)
+    autor (string)
+    editorial (string)
+    edicion (int)
+    c (vector<Categoria>) // Categorías del libro
+Salida:
+    (bool) // Si el libro pudo ser agregado a la repisa o no
+*/
 bool Repisa::agregarLibro(string titulo, int anio, string autor, string editorial, int edicion, vector<Categoria> c) {
 
     if (tipoTexto.size() == capacidad) {
@@ -45,8 +64,10 @@ bool Repisa::agregarLibro(string titulo, int anio, string autor, string editoria
 
     tipoTexto.push_back(1);
 
-    Libro nuevoLibro(titulo, anio);
+    Libro nuevoLibro;
 
+    nuevoLibro.setTitulo(titulo);
+    nuevoLibro.setAnio(anio);
     nuevoLibro.setAutor(autor);
     nuevoLibro.setEditorial(editorial);
     nuevoLibro.setEdicion(edicion);
@@ -61,6 +82,17 @@ bool Repisa::agregarLibro(string titulo, int anio, string autor, string editoria
 
 }
 
+/*
+Método para agregar una revista en la repisa
+Entrada:
+    titulo (string)
+    año (int)
+    nombreRevista (string)
+    volumen (int)
+    c (vector<Categoria>) // Categorías de la revista
+Salida:
+    (bool) // Si la revista pudo ser agregada a la repisa o no
+*/
 bool Repisa::agregarRevista(string titulo, int anio, string nombreRevista, int volumen, vector<Categoria> c) {
 
     if (tipoTexto.size() == capacidad) {
@@ -84,6 +116,11 @@ bool Repisa::agregarRevista(string titulo, int anio, string nombreRevista, int v
 
 }
 
+/*
+Método para obtener la lista de textos en la repisa
+Salida:
+    textos (string) // Lista de textos: posición y título
+*/
 string Repisa::consultarTextos() {
 
     int pos_libros=0, pos_revistas=0;
@@ -92,22 +129,31 @@ string Repisa::consultarTextos() {
         return "-\n";
     }
 
-    string ret = "";
+    string textos = "";
 
     for(int pos=0; pos<tipoTexto.size(); pos++) {
-        ret += to_string(pos+1)+". ";
+        textos += to_string(pos+1)+". ";
         if (tipoTexto[pos] == 1) {
-            ret += libros[pos_libros++].getTitulo();
+            textos += libros[pos_libros++].getTitulo();
         } else {
-            ret += revistas[pos_revistas++].getTitulo();
+            textos += revistas[pos_revistas++].getTitulo();
         }
-        ret += "\n";
+        textos += "\n";
     }
 
-    return ret;
+    return textos;
 
 }
 
+/*
+Método para buscar un texto en la repisa.
+Entrada:
+    op (int) // Tipo de texto
+    titulo (string)
+Salida:
+    {posición, detalles} (pair<int, string>)
+    // Regresa posición del texto y la información de este
+*/
 pair<int, string> Repisa::buscarTexto(int op, string titulo) {
 
     int posLibro = 0, posRevista = 0;
@@ -137,6 +183,15 @@ pair<int, string> Repisa::buscarTexto(int op, string titulo) {
 
 }
 
+/*
+Método para reservar un texto.
+Entrada:
+    op (int) // Tipo de texto
+    pos (int) // Posición del texto
+    u (Usuario) // Usuario reservando el texto
+Salida:
+    posible (bool) // Si el texto pudo ser reservado o no
+*/
 bool Repisa::reservarTexto(int op, int pos, Usuario u) {
     
     bool posible;
@@ -149,6 +204,14 @@ bool Repisa::reservarTexto(int op, int pos, Usuario u) {
 
 }
 
+/*
+Método para renovar la fecha de regreso de un texto.
+Entrada:
+    op (int) // Tipo de texto
+    pos (int) // Posición del texto
+Salida:
+    ret (string) // Nueva fecha de regreso
+*/
 string Repisa::renovarTexto(int op, int pos) {
     
     bool posible;
@@ -171,6 +234,14 @@ string Repisa::renovarTexto(int op, int pos) {
 
 }
 
+/*
+Método para consultar la reserva de un texto.
+Entrada:
+    op (int) // Tipo de texto
+    pos (int) // Posición del texto
+Salida:
+    ret (string) // Información de la reserva
+*/
 string Repisa::consultarReserva(int op, int pos) {
 
     string ret = "";
@@ -189,6 +260,12 @@ string Repisa::consultarReserva(int op, int pos) {
 
 }
 
+/*
+Método para regresar un texto
+Entrada:
+    op (int) // Tipo de texto
+    pos (int) // Posición del texto
+*/
 void Repisa::regresarTexto(int op, int pos) {
 
     if (op == 1) {
@@ -198,43 +275,3 @@ void Repisa::regresarTexto(int op, int pos) {
     }
 
 }
-
-/*
-bool Repisa::quitarTexto(int pos) {
-
-    if (tipoTexto.size() < pos) {
-        return false;
-    }
-
-    int posLibro = 0, posRevista = 0;
-
-    for(int i=0; i<pos; i++) {
-        if (tipoTexto[pos] == 1 && tipoTexto[i] == 1) {
-            posLibro++;
-        } else if (tipoTexto[pos] == 2 && tipoTexto[i] == 2) {
-            posRevista++;
-        }
-    }
-
-    if (tipoTexto[pos] == 1) {
-        for (posLibro; posLibro < libros.size()-1; posLibro++) {
-            libros[posLibro] = libros[posLibro+1];
-        }
-        libros.pop_back();
-    } else {
-        for (posRevista; posRevista < revistas.size()-1; posRevista++) {
-            revistas[posRevista] = revistas[posRevista+1];
-        }
-        revistas.pop_back();
-    }
-
-    for(int i=pos; i<tipoTexto.size()-1; i++) {
-        tipoTexto[i] = tipoTexto[i+1];
-    }
-
-    tipoTexto.pop_back();
-
-    return true;
-
-}
-*/

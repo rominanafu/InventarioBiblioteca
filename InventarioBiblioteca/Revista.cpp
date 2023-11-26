@@ -2,6 +2,15 @@
 
 using namespace std;
 
+#ifndef REVISTA_CPP
+#define REVISTA_CPP
+
+/*
+La clase Revista es un tipo de texto
+que contiene un número de volumen y 
+el nombre de la revista.
+*/
+
 class Revista : public Texto {
 
     private:
@@ -22,7 +31,7 @@ class Revista : public Texto {
 
 };
 
-Revista::Revista() {
+Revista::Revista():Texto() {
     volumen = 0;
     nombreRevista = "";
 }
@@ -48,6 +57,11 @@ string Revista::getNombreRevista() {
     return nombreRevista;
 }
 
+/*
+Método para consultar toda la información de la revista.
+Salida:
+    ret (string) // String con toda la información de la revista
+*/
 string Revista::consultarInformacion() {
     string ret = "";
     ret += "Titulo: " + titulo + "\n";
@@ -63,3 +77,5 @@ string Revista::consultarInformacion() {
     }
     return ret;
 }
+
+#endif

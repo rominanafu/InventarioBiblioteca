@@ -3,8 +3,13 @@
 
 using namespace std;
 
-#ifndef CATEGORIA_H
-#define CATEGORIA_H
+#ifndef CATEGORIA_CPP
+#define CATEGORIA_CPP
+
+/*
+La clase Categoria servirá para generar objetos
+que ayuden a categorizar los textos.
+*/
 
 class Categoria {
 

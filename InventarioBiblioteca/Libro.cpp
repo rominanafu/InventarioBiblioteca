@@ -2,6 +2,15 @@
 
 using namespace std;
 
+#ifndef LIBRO_CPP
+#define LIBRO_CPP
+
+/*
+La clase Libro es un tipo de texto
+que contiene un número de edición,
+una editorial y un autor.
+*/
+
 class Libro : public Texto {
 
     private:
@@ -25,7 +34,7 @@ class Libro : public Texto {
 
 };
 
-Libro::Libro() {
+Libro::Libro():Texto() {
     edicion = 0;
     editorial = "";
     autor = "";
@@ -61,6 +70,11 @@ string Libro::getAutor() {
     return autor;
 }
 
+/*
+Método para consultar toda la información del libro.
+Salida:
+    ret (string) // String con toda la información del libro
+*/
 string Libro::consultarInformacion() {
     
     string ret = "";
@@ -70,15 +84,17 @@ string Libro::consultarInformacion() {
     ret += "\nEditorial: " + editorial;
     ret += "\nEdicion: " + to_string(edicion);
     ret += "\nAnio de publicacion: " + to_string(anio);
-    ret += "Categorias a las que pertenece:\n";
+    ret += "\nCategorias a las que pertenece:\n";
 
     for (int i=0; i<categorias.size(); i++) {
         ret += "- " + categorias[i].getNombre() + "\n";
     }
     
     if (categorias.size() == 0) {
-        ret += "No se le ha asignado ninguna categoria hasta el momento.\n";
+        ret += "No se le asigno ninguna categoria.\n";
     }
 
     return ret;
 }
+
+#endif
