@@ -18,12 +18,10 @@ class Usuario {
 
         string nombre;
         string telefono;
-        int id;
 
     public:
 
         Usuario();
-        Usuario(int _id);
 
         void setNombre(string n);
         void setTelefono(string t);
@@ -35,13 +33,6 @@ class Usuario {
 Usuario::Usuario() {
     nombre = "";
     telefono = "";
-    id = 0;
-}
-
-Usuario::Usuario(int _id) {
-    nombre = "";
-    telefono = "";
-    id = _id;
 }
 
 void Usuario::setNombre(string n) {

@@ -57,8 +57,8 @@ Salida:
 */
 pair<int,int> posiciones(int op, bool mostrarInfo=true) {
     
-    if (op == 1) cout << "\nIngrese el nombre del libro:\n";
-    else cout << "\nIngrese el nombre de la revista:\n";
+    if (op == 1) cout << "\nIngrese el titulo del libro:\n";
+    else cout << "\nIngrese el titulo de la revista:\n";
 
     cin.ignore();
     string titulo="";
@@ -102,7 +102,7 @@ void registrarTexto(int op) {
         getline(cin, autor);
         cout << "Ingrese el nombre de la editorial:\n";
         getline(cin, editorial);
-        cout << "Ingrese numero de edición:\n";
+        cout << "Ingrese numero de edicion:\n";
         cin >> edicion;
 
         cout << "A que categorias pertenece este libro?\n";
@@ -199,11 +199,10 @@ void reservar(int op) {
         }
         
         if (posUsuario == -1) {
-            Usuario nuevoUsuario(usuarios.size()+1);
+            Usuario nuevoUsuario;
             
             string telefono="";
             cout << "Ingrese numero de telefono:\n";
-            cin.ignore();
             getline(cin, telefono);
 
             nuevoUsuario.setNombre(nombre);
@@ -313,7 +312,7 @@ int main() {
 
         if (opcion == 1) { // Registrar usuario
 
-            Usuario nuevoUsuario(usuarios.size()+1);
+            Usuario nuevoUsuario;
             
             string nombre="", telefono="";
             cout << "Ingrese nombre del usuario:\n";
