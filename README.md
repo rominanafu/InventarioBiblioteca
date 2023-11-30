@@ -49,3 +49,9 @@ Al regresar un texto, simplemente es necesario indicar el título de este.
 Esta opción permitirá ver todos los textos que han sido registrados en la revista, siendo ordenados por repisa y por orden de registro.
 <br><br>
 
+## Cómo correr este programa
+Para correr este programa, siga las siguientes instrucciones:
+1. Descargue el ZIP, y extráigalo.
+2. Abra una terminal en la carpeta "InventarioBiblioteca"
+3. Compile el código con la línea "g++ Biblioteca.cpp -o Biblioteca.exe"
+4. Ejecute el código con la línea "Biblioteca.exe"
